@@ -76,19 +76,18 @@ public class api_cliente {
           c_api.setRequestProperty("Content-Type", "application/json; utf-8");
          // c_api.setRequestProperty("Accept", "application/json");
           c_api.setDoOutput(true);
-          String jsonInputString = "{\"nit\":\"1234\",\n" +
+          String jsonS = "{\"nit\":\"1234\",\n" +
             "\"nombres\":\"Jose Jose\",\n" +
             "\"apellidos\":\"Lopez Lopez\",\n" +
             "\"direccion\":\"Direccion\",\n" +
              "\"telefono\":\"555\",\n" +
             "\"fecha_nacimiento\":\"1995-01-01\"}";
          OutputStream os = c_api.getOutputStream();
-        os.write(jsonInputString.getBytes());
+        os.write(jsonS.getBytes());
         os.flush();
           
           if (c_api.getResponseCode()==200){
-             BufferedReader br = new BufferedReader(new InputStreamReader(
-                (c_api.getInputStream())));
+             
  
                 salida = 1;
         
