@@ -7,6 +7,7 @@ package apis;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import org.json.JSONArray;
@@ -18,11 +19,11 @@ import javax.swing.table.DefaultTableModel;
  * @author paiz2
  */
 public class api_cliente {
-    
+     private String url_api = "https://localhost:5001/api/clientes";
     private String get(){
         String salida="";
         try{
-          URL url = new URL("https://localhost:5001/api/clientes");  
+          URL url = new URL(url_api);  
           HttpURLConnection c_api = (HttpURLConnection) url.openConnection();
           c_api.setRequestMethod("GET");
           c_api.setRequestProperty("Accept", "application/json");
@@ -65,6 +66,48 @@ public class api_cliente {
  System.out.println("Error tabla:" + ex.getMessage());
  }
  return tabla;
- }   
+ }
+ public int  post(){
+         int salida = 0;
+         try{
+          URL url = new URL(url_api);  
+          HttpURLConnection c_api = (HttpURLConnection) url.openConnection();
+          c_api.setRequestMethod("POST");
+          c_api.setRequestProperty("Content-Type", "application/json; utf-8");
+         // c_api.setRequestProperty("Accept", "application/json");
+          c_api.setDoOutput(true);
+          String jsonInputString = "{\"nit\":\"1234\",\n" +
+            "\"nombres\":\"Jose Jose\",\n" +
+            "\"apellidos\":\"Lopez Lopez\",\n" +
+            "\"direccion\":\"Direccion\",\n" +
+             "\"telefono\":\"555\",\n" +
+            "\"fecha_nacimiento\":\"1995-01-01\"}";
+         OutputStream os = c_api.getOutputStream();
+        os.write(jsonInputString.getBytes());
+        os.flush();
+          
+          if (c_api.getResponseCode()==200){
+             BufferedReader br = new BufferedReader(new InputStreamReader(
+                (c_api.getInputStream())));
+ 
+                salida = 1;
+        
+        
+              
+          }else{
+            
+              System.out.println("No se puede conectar a la api : " + c_api.getResponseCode());
+          
+          }
+          
+          c_api.disconnect();
+            
+        }catch(IOException ex){
+     
+            System.out.println("Error api:" + ex.getMessage());
+        }
+         return salida;
+    
+    }
     
 }
